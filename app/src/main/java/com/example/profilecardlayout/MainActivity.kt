@@ -27,7 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.profilecardlayout.ui.theme.lightGreen200
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.Colors
 import androidx.wear.compose.material.ContentAlpha
 import com.example.profilecardlayout.ui.theme.MyTheme
 
@@ -35,7 +37,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyTheme {
+            MyTheme(dynamicColor = false) {
                 MainScreen()
             }
         }
@@ -45,7 +47,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
     ) {
         ProfileCard()
     }
@@ -58,7 +61,8 @@ fun ProfileCard() {
             .fillMaxWidth()
             .wrapContentHeight(align = Alignment.Top)
             .padding(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     )
     {
         Row(
@@ -77,9 +81,9 @@ fun ProfileCard() {
 fun ProfilePicture() {
     Card(
         shape = CircleShape,
-        border = BorderStroke(width = 2.dp, color = Color.Green),
-        modifier = Modifier.padding(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        border = BorderStroke(width = 2.dp, color = lightGreen200),
+        modifier = Modifier.padding(16.dp),                                        
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Image(
             painter = painterResource(id = R.drawable.profile_picture),
@@ -109,7 +113,7 @@ fun ProfileContent() {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    MyTheme {
+    MyTheme(dynamicColor = false) {
         MainScreen()
     }
 }
