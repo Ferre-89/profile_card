@@ -36,8 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.ContentAlpha
 import com.example.profilecardlayout.ui.theme.MyTheme
-import com.example.profilecardlayout.ui.theme.lightGreen200
-import com.example.profilecardlayout.ui.theme.teal
+import com.example.profilecardlayout.ui.theme.colorsScheme
+import com.example.profilecardlayout.ui.theme.shapeScheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,13 +64,13 @@ fun MainScreen() {
 
 @Composable
 fun AppBar() {
-    TopAppBar(backgroundColor = teal, navigationIcon = {
+    TopAppBar(backgroundColor = colorsScheme.teal, navigationIcon = {
         Icon(
             Icons.Default.Home, contentDescription = "Home",
             Modifier.padding(horizontal = 12.dp)
         )
     },
-        title = { Text("Messaging Applicatio users") })
+        title = { Text("Messaging Application users") })
 }
 
 @Composable
@@ -81,8 +81,9 @@ fun ProfileCard() {
             .wrapContentHeight(align = Alignment.Top)
             .padding(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
-    )
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        shape = MaterialTheme.shapeScheme.medium,
+        )
     {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -100,7 +101,7 @@ fun ProfileCard() {
 fun ProfilePicture() {
     Card(
         shape = CircleShape,
-        border = BorderStroke(width = 2.dp, color = lightGreen200),
+        border = BorderStroke(width = 2.dp, color = colorsScheme.lightGreen200),
         modifier = Modifier.padding(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
