@@ -52,12 +52,16 @@ class MainActivity : ComponentActivity() {
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(userProfiles: List<UserProfile> = userProfileList) {
     Scaffold(topBar = { AppBar() }) {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            ProfileCard()
+            Column {
+                for (userProfile in userProfiles) {
+                    ProfileCard(userProfile)
+                }
+            }
         }
     }
 }
@@ -74,39 +78,44 @@ fun AppBar() {
 }
 
 @Composable
-fun ProfileCard() {
+fun ProfileCard(userProfile: UserProfile) {
     Card(
         modifier = Modifier
+            .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth()
-            .wrapContentHeight(align = Alignment.Top)
-            .padding(16.dp),
+            .wrapContentHeight(align = Alignment.Top),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         shape = MaterialTheme.shapeScheme.medium,
-        )
+    )
     {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            ProfilePicture()
-            ProfileContent()
+            ProfilePicture(userProfile.drawableId, userProfile.status)
+            ProfileContent(userProfile.name, userProfile.status)
         }
     }
 }
 
 
 @Composable
-fun ProfilePicture() {
+fun ProfilePicture(drawableId: Int, onlineStatus: Boolean) {
     Card(
         shape = CircleShape,
-        border = BorderStroke(width = 2.dp, color = colorsScheme.lightGreen200),
+        border = BorderStroke(
+            width = 2.dp, color = if (onlineStatus)
+                colorsScheme.lightGreen200
+            else
+                colorsScheme.red
+        ),
         modifier = Modifier.padding(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Image(
-            painter = painterResource(id = R.drawable.profile_picture),
+            painter = painterResource(id = drawableId),
             contentDescription = "Content description",
             modifier = Modifier.size(72.dp),
             contentScale = ContentScale.Crop
@@ -115,14 +124,19 @@ fun ProfilePicture() {
 }
 
 @Composable
-fun ProfileContent() {
+fun ProfileContent(userName: String, onlineStatus: Boolean) {
     Column(modifier = Modifier.padding(8.dp)) {
         Text(
-            text = "John Doe",
-            style = MaterialTheme.typography.titleLarge
+            text = userName,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = if (onlineStatus) Modifier.alpha(1f) else
+                Modifier.alpha(ContentAlpha.medium),
         )
         Text(
-            text = "Active Now",
+            text = if (onlineStatus)
+                "Active Now"
+            else
+                "Offline",
             modifier = Modifier.alpha(ContentAlpha.medium),
             style = MaterialTheme.typography.titleSmall
         )

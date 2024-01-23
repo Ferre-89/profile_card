@@ -17,7 +17,8 @@ data class Colors(
     val veryLightGray: Color = Color(0x60DCDCDC),
     val lightGreen200: Color = Color(0x9932CD32),
     val teal: Color = Color(0xFF008080),
-)
+    val red: Color = Color(0xFFFF5050),
+    )
 
 val colorInstance
     get() = Colors()
