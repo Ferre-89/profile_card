@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
@@ -29,12 +31,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.ContentAlpha
+import coil.compose.AsyncImage
 import com.example.profilecardlayout.ui.theme.MyTheme
 import com.example.profilecardlayout.ui.theme.colorsScheme
 import com.example.profilecardlayout.ui.theme.shapeScheme
@@ -57,9 +59,9 @@ fun MainScreen(userProfiles: List<UserProfile> = userProfileList) {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            Column {
-                for (userProfile in userProfiles) {
-                    ProfileCard(userProfile)
+            LazyColumn {
+                items(userProfiles) { userProfile ->
+                    ProfileCard(userProfile = userProfile)
                 }
             }
         }
@@ -106,19 +108,21 @@ fun ProfilePicture(drawableId: Int, onlineStatus: Boolean) {
     Card(
         shape = CircleShape,
         border = BorderStroke(
-            width = 2.dp, color = if (onlineStatus)
-                colorsScheme.lightGreen200
+            width = 2.dp, color = if (onlineStatus) colorsScheme.lightGreen200
             else
                 colorsScheme.red
         ),
         modifier = Modifier.padding(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
-        Image(
-            painter = painterResource(id = drawableId),
-            contentDescription = "Content description",
-            modifier = Modifier.size(72.dp),
-            contentScale = ContentScale.Crop
+        AsyncImage(
+//            painter = painterResource(id = drawableId),
+            model = drawableId,
+            modifier = Modifier
+                .size(72.dp)
+                .clip(CircleShape),
+            contentDescription = "Profile picture description"
+//            contentScale = ContentScale.Crop
         )
     }
 }

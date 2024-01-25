@@ -4,5 +4,11 @@ class UserProfile constructor(val name: String, val status: Boolean, val drawabl
 
 val userProfileList = arrayListOf(
     UserProfile("John Doe", true, R.drawable.profile_picture),
+    UserProfile("Anna Joans", false, R.drawable.profile_woman),
+    UserProfile("John Doe", true, R.drawable.profile_picture),
+    UserProfile("Anna Joans", false, R.drawable.profile_woman),
+    UserProfile("John Doe", true, R.drawable.profile_picture),
+    UserProfile("Anna Joans", false, R.drawable.profile_woman),
+    UserProfile("John Doe", true, R.drawable.profile_picture),
     UserProfile("Anna Joans", false, R.drawable.profile_woman)
 )
