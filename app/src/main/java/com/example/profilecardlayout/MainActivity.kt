@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,6 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.ContentAlpha
 import coil.compose.AsyncImage
+import com.codingtroops.profilecardlayout.UserProfile
+import com.codingtroops.profilecardlayout.userProfileList
 import com.example.profilecardlayout.ui.theme.MyTheme
 import com.example.profilecardlayout.ui.theme.colorsScheme
 import com.example.profilecardlayout.ui.theme.shapeScheme
@@ -96,7 +97,7 @@ fun ProfileCard(userProfile: UserProfile) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            ProfilePicture(userProfile.drawableId, userProfile.status)
+            ProfilePicture(userProfile.pictureUrl, userProfile.status)
             ProfileContent(userProfile.name, userProfile.status)
         }
     }
@@ -104,7 +105,7 @@ fun ProfileCard(userProfile: UserProfile) {
 
 
 @Composable
-fun ProfilePicture(drawableId: Int, onlineStatus: Boolean) {
+fun ProfilePicture(pictureUrl: String, onlineStatus: Boolean) {
     Card(
         shape = CircleShape,
         border = BorderStroke(
@@ -116,13 +117,11 @@ fun ProfilePicture(drawableId: Int, onlineStatus: Boolean) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         AsyncImage(
-//            painter = painterResource(id = drawableId),
-            model = drawableId,
+            model = pictureUrl,
             modifier = Modifier
                 .size(72.dp)
                 .clip(CircleShape),
             contentDescription = "Profile picture description"
-//            contentScale = ContentScale.Crop
         )
     }
 }
