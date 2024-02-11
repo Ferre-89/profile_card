@@ -44,16 +44,18 @@ import com.example.profilecardlayout.ui.theme.colorsScheme
 import com.example.profilecardlayout.ui.theme.shapeScheme
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme(dynamicColor = false) {
-               UsersApplication()
+                UsersApplication()
             }
         }
     }
@@ -62,7 +64,8 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun UserListScreen(
-    userProfiles: List<UserProfile> = userProfileList, navController: NavHostController?
+    userProfiles: List<UserProfile> = userProfileList,
+    navController: NavHostController?
 ) {
     Scaffold(topBar = { AppBar() }) {
         Surface(
@@ -70,8 +73,8 @@ fun UserListScreen(
         ) {
             LazyColumn {
                 items(userProfiles) { userProfile ->
-                    ProfileCard(userProfile = userProfile){
-                        navController?.navigate("user_deatils")
+                    ProfileCard(userProfile = userProfile) {
+                        navController?.navigate("user_deatils/${userProfile.id}")
                     }
                 }
             }
@@ -84,17 +87,23 @@ fun UsersApplication(userProfiles: List<UserProfile> = userProfileList) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "users_list") {
         composable("users_list") {
-            UserListScreen(userProfileList, navController)
+            UserListScreen(userProfiles, navController)
         }
-        composable("user_deatils") {
-            UserProfileDetailsPreview()
+        composable("user_deatils/{userId}",
+            arguments = listOf(navArgument("userId") {
+                type = NavType.IntType
+            })
+        )
+        { navBackStackEntry ->
+            UserProfileDetailsScreen(userId = navBackStackEntry.arguments!!.getInt("userId"))
         }
     }
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun UserPrifleDetailsScreen(userProfile: UserProfile) {
+fun UserProfileDetailsScreen(userId: Int) {
+    val userProfile = userProfileList.first { userProfile -> userId == userProfile.id }
     Scaffold(topBar = { AppBar() }) {
         Surface(
             modifier = Modifier.fillMaxSize()
@@ -200,7 +209,7 @@ fun ProfileContent(userName: String, onlineStatus: Boolean, aligment: Alignment.
 @Composable
 fun UserProfileDetailsPreview() {
     MyTheme(dynamicColor = false) {
-        UserPrifleDetailsScreen(userProfileList[0])
+        UserProfileDetailsScreen(0)
     }
 }
 
